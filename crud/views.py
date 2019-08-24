@@ -21,12 +21,16 @@ def webhook(request):
         params = req.get('queryResult').get('parameters')
 
         # action에 따라서 이동합니다.
-        if action == 'order_create':
+        if action == 'order_create-yes':
             return order_create(params)
+        elif action == 'order_create-no':
+            return order_create_no(params)
         elif action == 'order_read':
             return order_read(params)
-        elif action == 'order_update'
+        elif action == 'order_update-yes'
             return order_update(params)
+        elif action == 'order_update-no'
+            return order_update_no(params)
         elif action == 'order_delete-yes':
             return order_delete(params)
         elif action == 'order_delete-no':
@@ -45,7 +49,7 @@ def order_create(params):
         'fulfillmentText' : '감사합니다. 주문번호는 {} 입니다.'.format(item.id),
           "outputContexts": [
             {
-              "name": "<Context 이름>",
+              "name": "<context 이름>",
               "lifespanCount": 3,
               "parameters": {
                 "order_number": item.id
@@ -67,7 +71,7 @@ def order_read(params):
     response = {'fulfillmentText': '{}님이 주문하신 내역은 {} 입니다.'.format(item.name, item.content)
                 "outputContexts": [
                     {
-                      "name": "<Context이름>",
+                      "name": "<context 이름>",
                       "lifespanCount": 3,
                       "parameters": {
                         "order_number": item.id
@@ -91,7 +95,7 @@ def order_update(params):
     response = {'fulfillmentText': '성공적으로 수정되었습니다. {}님이 주문하신 내역은 {} 입니다.'.format(item.name, item.content)
                 "outputContexts": [
                     {
-                      "name": "<Context이름>",
+                      "name": Order_context,
                       "lifespanCount": 3,
                       "parameters": {
                         "order_number": item.id
@@ -112,13 +116,39 @@ def order_delete(params):
     response = {'fulfillmentText': '성공적으로 삭제되었습니다.')
                 "outputContexts": [
                     {
-                      "name": "<Context이름>",
+                      "name": Order_context,
                       "lifespanCount": 0,
                     }
                   ]
                }
     
     # context의 lifespanCount를 0으로 주어서 context를 삭제합니다.
+    return JsonResponse(response, safe=False)
+    
+    
+def order_create_no(params):    
+    response = {'fulfillmentText': '알겠습니다.')
+                "outputContexts": [
+                    {
+                      "name": "<context 이름>",
+                      "lifespanCount": 0,
+                    }
+                  ]
+               }
+    
+    return JsonResponse(response, safe=False)
+
+
+def order_update_no(params):    
+    response = {'fulfillmentText': '알겠습니다.')
+                "outputContexts": [
+                    {
+                      "name": "<context 이름>",
+                      "lifespanCount": 0,
+                    }
+                  ]
+               }
+    
     return JsonResponse(response, safe=False)
     
     
