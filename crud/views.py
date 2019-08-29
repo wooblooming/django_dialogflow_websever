@@ -23,11 +23,11 @@ def webhook(request):
         params = req.get('queryResult').get('parameters')
 
         # action에 따라서 이동합니다.
-        if action == 'order_create-yes':
+        if action == 'order_create':
             return order_create(params)
         elif action == 'order_read':
             return order_read(params)
-        elif action == 'order_update-yes':
+        elif action == 'order_update':
             return order_update(params)
         elif action == 'order_delete-yes':
             return order_delete(params)
