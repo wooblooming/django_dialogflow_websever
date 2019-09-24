@@ -23,7 +23,9 @@ def webhook(request):
         params = req.get('queryResult').get('parameters')
 
         # action에 따라서 이동합니다.
-        if action == 'order_create':
+        if action == 'self_introduce':
+            return self_introduce()
+        elif action == 'order_create':
             return order_create(params)
         elif action == 'order_read':
             return order_read(params)
@@ -33,8 +35,22 @@ def webhook(request):
             return order_delete(params)
         elif action == 'order_delete-no':
             return order_delete_no(params)
+        
             
-
+def self_introduce():
+    
+    
+    # JSON 형식의 response 입니다.
+    response = {
+        'fulfillmentText' : '저는 새로운 트렌드를 선도하는 분식을 판매하는 봇입니다.'
+    }
+            
+    return JsonResponse(response, safe=False)
+    # 주문 정보가 포함된 context를 함께 전송합니다.
+    # 오류가 나지 않기 위해 'safe=False'가 필요합니다.
+    
+    
+    
 def order_create(params):
     
     name = params.get('name')
@@ -42,7 +58,7 @@ def order_create(params):
     item = Order(name=name, content = content)
     item.save()
     
-    # JSON 형식의 response 입니다.
+    
     response = {
         'fulfillmentText' : '감사합니다. 주문번호는 {} 입니다.'.format(item.id),
           "outputContexts": [
@@ -57,8 +73,7 @@ def order_create(params):
     }
     
     return JsonResponse(response, safe=False)
-    # 주문 정보가 포함된 context를 함께 전송합니다.
-    # 오류가 나지 않기 위해 'safe=False'가 필요합니다.
+    
     
     
     
