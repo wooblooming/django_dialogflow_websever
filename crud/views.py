@@ -31,15 +31,13 @@ def webhook(request):
             return order_read(params)
         elif action == 'order_update':
             return order_update(params)
-        elif action == 'order_delete-yes':
+        elif action == 'order_delete.order_delete-yes':
             return order_delete(params)
-        elif action == 'order_delete-no':
+        elif action == 'order_delete.order_delete-no':
             return order_delete_no(params)
         
             
 def self_introduce():
-    
-    
     # JSON 형식의 response 입니다.
     response = {
         'fulfillmentText' : '저는 새로운 트렌드를 선도하는 분식을 판매하는 봇입니다.'
@@ -61,15 +59,15 @@ def order_create(params):
     
     response = {
         'fulfillmentText' : '감사합니다. 주문번호는 {} 입니다.'.format(item.id),
-          "outputContexts": [
-            {
-              "name": order_context,
-              "lifespanCount": 3,
-              "parameters": {
-                "order_number": item.id
-              }
-            }
-      ]
+      #     "outputContexts": [
+      #       {
+      #         "name": order_context,
+      #         "lifespanCount": 3,
+      #         "parameters": {
+      #           "order_number": item.id
+      #         }
+      #       }
+      # ]
     }
     
     return JsonResponse(response, safe=False)
